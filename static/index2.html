@@ -1,0 +1,124 @@
+<!DOCTYPE html>
+<html>
+    <head>
+        <meta charset="utf-8" />
+        <meta http-equiv="X-UA-Compatible" content="IE=edge" />
+        <title>Sound Shop</title>
+        <meta name="description" content="" />
+        <meta name="viewport" content="width=device-width, initial-scale=1" />
+        <link rel="stylesheet" href="style.css" />
+        <link
+            rel="stylesheet"
+            href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/4.7.0/css/font-awesome.min.css"
+        />
+        <script
+            src="https://kit.fontawesome.com/edcc9dc6ef.js"
+            crossorigin="anonymous"
+        ></script>
+    </head>
+
+    <body>
+        <div class="topnav-container">
+            <div class="topnav">
+                <div class="navcontainer">
+                    <div class="logoContainer">
+                        <img src="./images/logo2.png" alt="Logo" />
+                    </div>
+                    <div class="menucontainer">
+                        <ul>
+                            <li>
+                                <a
+                                    class="menulink"
+                                    href="#home"
+                                    onclick="setupPage()"
+                                    >Home</a
+                                >
+                            </li>
+                            <li>
+                                <a
+                                    id="product-menulink"
+                                    class="menulink"
+                                    href="#products"
+                                    >Products</a
+                                >
+                            </li>
+                        </ul>
+                    </div>
+                    <div class="searchcontainer">
+                        <i class="fas fa-shopping-cart fa-2x"></i>
+                    </div>
+                </div>
+            </div>
+            <div id="product-topnav-section-div" class="product-topnav-section">
+                <div
+                    id="speakers-topnav"
+                    class="products-nav-img-div"
+                    onclick="selectProductMenu('subType', 'regular');"
+                >
+                    <div class="product-image">
+                        <img src="./images/sonos-topnav.jpg" alt="" />
+                    </div>
+                    <div class="topnav-label">
+                        <label>Speakers</label>
+                    </div>
+                </div>
+                <div
+                    id="smart-topnav"
+                    class="products-nav-img-div"
+                    onclick="selectProductMenu('subType', 'smart');"
+                >
+                    <div class="product-image">
+                        <img src="./images/ghome-topnav.jpg" alt="" />
+                    </div>
+                    <div class="topnav-label">
+                        <label>Smart Speakers</label>
+                    </div>
+                </div>
+                <div
+                    id="headphones-topnav"
+                    class="products-nav-img-div"
+                    onclick="selectProductMenu('type', 'headphones');"
+                >
+                    <div class="product-image">
+                        <img src="./images/bose-topnav.jpg" alt="" />
+                    </div>
+                    <div class="topnav-label">
+                        <label>Headphones</label>
+                    </div>
+                </div>
+            </div>
+        </div>
+
+        <div class="banner-section"></div>
+
+        <div class="content-section">
+            <div id="categorySection" class="category-section"></div>
+            <div id="products" class="product-section"></div>
+        </div>
+
+       
+        <div class="footer-section">
+            <div class="sm-icons-section">
+                <ul>
+                    <li><i class="fab fa-facebook-f"></i></li>
+                    <li><i class="fab fa-twitter"></i></li>
+                </ul>
+            </div>
+            <div class="subscribe-section">
+                <form action="https://formspree.io/mqkajddy" method="POST">
+                    <label for="subscribe-email">Email Address</label>
+                    <input
+                        type="email"
+                        required
+                        id="subscribe-email"
+                        name="subscribe-email"
+                        placeholder="Your email address.."
+                    />
+                    <input type="submit" value="Submit" />
+                </form>
+            </div>
+        </div>
+        <script src="datastore.js"></script>
+        <script src="script.js"></script>
+    </body>
+</html>
