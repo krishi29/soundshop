@@ -101,7 +101,10 @@ input[type="checkbox"] {
     font-weight: 600;
     display: flex;
 }
-
+.nav-item{
+    font-weight: 700;
+    margin-right: 60px;
+}
 .menucontainer {
     display: block;
     display: flex;
@@ -192,6 +195,23 @@ input[type=text], input[type=password] {
     border: 1px solid #f1f1f1;
     margin-bottom: 25px;
   }
+  .error_redFrame {
+    /* border: 1px solid red;
+    Color: red; */
+
+    background:white !important;
+    color: #0f0 !important;
+    outline: solid #f00 1px !important;
+}
+
+.alert-error
+{
+    padding :1rem 2rem;
+    color :#ff0000;
+    margin:0 0 12px 0;
+    background-color:white;
+}
+.bg-black {background-color:black!important; }
 
 .vertical-label {
     writing-mode: vertical-rl;

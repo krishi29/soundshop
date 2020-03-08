@@ -4,11 +4,19 @@ const app = express(); // this creates  express app object
 
 const exphbs = require("express-handlebars");
 
-const productModel = require("./model/products");
+const productModel = require("./model/datastore");
+
+const bodyParser = require("body-parser");
+
+//load the environment variable file
+require("dotenv").config({ path: "./config/key.env" });
 
 //This tells express to set up our template engine has handlebars
 app.engine("handlebars", exphbs());
 app.set("view engine", "handlebars");
+
+// parse application/x-www-form-urlencoded
+app.use(bodyParser.urlencoded({ extended: false }));
 
 //serves static files
 
@@ -22,15 +30,8 @@ app.get("/", (req, res) => {
   });
 });
 
-app.get("/contact-us", (req, res) => {
-  res.render("contact", {
-    title: "Contact",
-    headingInfo: "Contact Us Page"
-  });
-});
-
 app.get("/products", (req, res) => {
-  var allproducts = productModel.getAllProducts();
+  var allproducts = productModel.getProducts();
   var selectedProducts = [];
   for (var i = 0; i < allproducts.length; i++) {
     var element = allproducts[i];
@@ -55,26 +56,15 @@ app.get("/products", (req, res) => {
   });
 });
 
-app.get("/sign-up", (req, res) => {
-  res.render("signUp", {
-    title: "Sign Up",
-    headingInfo: "Sign Up Page"
-  });
-});
+//load controllers
+const generalController = require("./controllers/general");
+//const productController = require("./controllers/product");
 
-app.get("/sign-In", (req, res) => {
-  res.render("signIn", {
-    title: "Sign In",
-    headingInfo: "Sign In Page"
-  });
-});
+//map each controller to the app object
+app.use("/", generalController);
+//app.use("/product", productController);
 
-<<<<<<< HEAD
-const PORT = process.env.PORT || 3000;
-=======
-const PORT = process.env.PORT;
->>>>>>> 29b9b10dae41d3781eafe9a32b4fc3eeeaf40512
-//This creates an Express Web Server that listens to HTTP Reuqest on port 3000
-app.listen(PORT, () => {
-  console.log(`Web Server Started`);
+const port = process.env.PORT || 3000; ////process.env.PORT is used for HEROKU
+app.listen(port, () => {
+  console.log(`Web Server is up and running`);
 });
