@@ -8,6 +8,8 @@ const productModel = require("./model/datastore");
 
 const bodyParser = require("body-parser");
 
+var path = require('path');
+
 //load the environment variable file
 require("dotenv").config({ path: "./config/key.env" });
 
