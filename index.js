@@ -35,12 +35,15 @@ app.get("/products", (req, res) => {
     var element = allproducts[i];
     var select = true;
 
-    if (req.query.type && element.type !== req.query.type) {
+    if (req.query.type && element.type !== req.query.type || req.query.selectBestSeller) {
       select = false;
     }
 
-    if (req.query.subType && element.categories.subType !== req.query.subType) {
+    if (req.query.subType && element.categories.subType !== req.query.subType || req.query.selectBestSeller) {
       select = false;
+    }
+    if (req.query.selectBestSeller && element.bestSeller) {
+      select = true;
     }
 
     if (select) {

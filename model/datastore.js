@@ -13,7 +13,9 @@ var productsData = [
             subType: "overtheear",
             connection: "wireless",
             brand: "Dre"
+            
         },
+        bestSeller:"true",
         images: [
             "beats solo 1.jpg",
             "beats solo 2.jpg",
@@ -31,7 +33,9 @@ var productsData = [
             subType: "overtheear",
             connection: "wireless",
             brand: "Bose"
+          
         },
+        bestSeller:"true",
         images: [
             "bose headphones 1.jpg",
             "bose headphones 2.jpg",
@@ -104,6 +108,7 @@ var productsData = [
             connection: "wireless",
             brand: "Generic"
         },
+        bestSeller:"true",
         images: [
             "generic earbuds 1.jpg",
             "generic earbuds 2.jpg",
@@ -123,6 +128,7 @@ var productsData = [
             connection: "wireless",
             brand: "Google"
         },
+        bestSeller:"true",
         images: ["google home 1.jpg", "google home 2.jpg"]
     },
     {
@@ -163,6 +169,7 @@ var productsData = [
             connection: "wired",
             brand: "Marshal"
         },
+        bestSeller:"true",
         images: [
             "marshal wired headphone 1.jpg",
             "marshal wired headphone 2.jpg"
@@ -205,6 +212,7 @@ var productsData = [
             connection: "wireless",
             brand: "Samsung"
         },
+        bestSeller:"true",
         images: ["samsung headphones 1.jpg"]
     },
     {
@@ -259,6 +267,7 @@ var productsData = [
             connection: "wireless",
             brand: "Sony"
         },
+        bestSeller:"true",
         images: ["sony headphones 1.jpg"]
     },
     {
@@ -299,6 +308,7 @@ var productsData = [
             connection: "wireless",
             brand: "Apple"
         },
+        bestSeller:"true",
         images: [
             "airpods 1.jpg",
             "airpods 2.jpg",
@@ -316,7 +326,9 @@ var productsData = [
             subType: "earbuds",
             connection: "wireless",
             brand: "Apple"
+            
         },
+        bestSeller:"true",
         images: ["airpods pro 1.jpg", "airpods pro 2.jpg"]
     },
     {
@@ -330,6 +342,7 @@ var productsData = [
             connection: "wireless",
             brand: "Amazon"
         },
+        bestSeller:"true",
         images: ["amazon alexa 1.jpg"]
     },
     {
