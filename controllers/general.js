@@ -225,7 +225,7 @@ router.post("/sign-in", (req, res) => {
 
 router.get("/contact-us", (req, res) => {
   var inputError = true;
-  res.render("/general/contactUs", {
+  res.render("general/contactUs.handlebars", {
     title: "Contact Page",
     valid: inputError
   });
