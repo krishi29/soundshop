@@ -168,7 +168,7 @@ router.post("/sign-up", (req, res) => {
       });
   }
 
-  res.render(" ", {
+  res.render("general/signUp", {
     title: "Customer signUp",
     error: errorMessage,
     errorID: errorType,
@@ -225,7 +225,7 @@ router.post("/sign-in", (req, res) => {
 
 router.get("/contact-us", (req, res) => {
   var inputError = true;
-  res.render("general/contactUs", {
+  res.render("/general/contactUs", {
     title: "Contact Page",
     valid: inputError
   });
@@ -304,7 +304,7 @@ router.post("/contact-us", (req, res) => {
     title: "contact Us",
     headingInfo: "Contact Us",
     valid: inputError
-    
+
     });
       })
       .catch(err => {
