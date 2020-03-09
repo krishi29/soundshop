@@ -4,22 +4,22 @@
 
 <form method="POST" action="/contact-us">
 
-    <label>FirstName</label>
+    <label><b>FirstName</b></label><br />
     <input type="text" name="firstName" placeholder="First Name" {{#if errorID.firstName}} class="error_redFrame"
         {{/if}}> <br><br>
 
-    <label>LastName</label>
+    <label><b>LastName</b></label><br />
     <input type="text" name="lastName" placeholder="Last Name" {{#if errorID.lastName}} class="error_redFrame" {{/if}}>
     <br><br>
 
-    <label>Email</label>
+    <label><b>Email</b></label><br />
     <input type="text" name="email" placeholder="Email" {{#if errorID.email}} class="error_redFrame" {{/if}}> <br><br>
 
-    <label>Phone No</label>
+    <label><b>Phone No</b></label><br />
     <input type="text" name="phoneNo" placeholder="Phone No" {{#if errorID.phoneNo}} class="error_redFrame" {{/if}}>
     <br><br>
 
-    <label>Message</label>
+    <label><b>Message</b></label><br />
     <textarea name="message" placeholder="Write Something..." {{#if errorID.message}} class="error_redFrame"
         {{/if}}></textarea> <br><br>
 

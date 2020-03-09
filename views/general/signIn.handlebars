@@ -10,12 +10,12 @@
 
 
         <form class="form" action="/sign-in" method="POST">
-            <label for="email">Email</label>
+            <label for="email"><b>Email</b></label><br />
             <input type="text" {{#if errorID.email}} class="error_redFrame" {{/if}} id="email" name="email"
                 autocomplete="email"  value="{{data.email}}">
             <div class="warningMessage">{{error.email}}</div>
 
-            <label for="password">Password</label>
+            <label for="password"><b>Password</b></label><br />
             <input type="password" {{#if errorID.password}} class="error_redFrame" {{/if}} id="password" name="password"
                 autocomplete="password"  value="{{data.password}}">
             <div class="warningMessage">{{error.password}}</div>

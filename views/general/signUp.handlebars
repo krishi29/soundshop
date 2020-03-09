@@ -5,12 +5,12 @@
     {{#if valid}}
 
     <form class="form" action="/sign-up" method="POST">
-        <label for="yourName">Your name</label><br />
+        <label for="yourName"><b>First name</b></label><br />
         <input type="text" {{#if errorID.yourName}} class="error_redFrame" {{/if}} id="yourName" name="yourName"
             autocomplete="yourName" placeholder="Mary" value="{{data.yourName}}" />
         <div class="warningMessage">{{error.yourName}}</div>
 
-        <label for="email">Email</label><br />
+        <label for="email"><b>Email</b></label><br />
         <input type="text" name="email"  {{#if errorID.email}} class="error_redFrame" {{/if}} placeholder="Enter Email" /> <br />
 
 
