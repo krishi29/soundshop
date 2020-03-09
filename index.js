@@ -1,17 +1,13 @@
 const express = require("express"); //this imports the express package  installed within  application
-
-const app = express(); // this creates  express app object
-
 const exphbs = require("express-handlebars");
-
 const productModel = require("./model/datastore");
-
 const bodyParser = require("body-parser");
-
 var path = require('path');
 
 //load the environment variable file
 require("dotenv").config({ path: "./config/key.env" });
+
+const app = express(); // this creates  express app object
 
 //This tells express to set up our template engine has handlebars
 app.engine("handlebars", exphbs());
