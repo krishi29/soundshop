@@ -1,3 +1,4 @@
+
 <!DOCTYPE html>
 <html>
 
@@ -18,9 +19,9 @@
     <header class="navbar navbar-expand navbar-dark flex-column flex-md-row bd-navbar bg-black">
                 <div class="navbar-brand mr-0 mr-md-2">
                     <img src="./images/logo2.png" alt="Logo" />
-                      </div> 
-                <div class="navbar-nav-scroll"> 
-                
+                      </div>
+                <div class="navbar-nav-scroll">
+
                     <ul class="navbar-nav bd-navbar-nav flex-row">
                         <li class="nav-item active"><a class="nav-link" style="color:white" href="/">Home</a></li>
                         <li class="nav-item"><a class="nav-link" style="color:white" href="/products">Products</a></li>
@@ -30,15 +31,8 @@
                         <li class="nav-item"><a class="nav-link" style="color:white" href="/sign-In">Sign In</a></li>
                     </ul>
                 </div>
-               
-                {{!-- <div class="searchcontainer"> --}}
-                    {{!-- <i class="fas fa-shopping-cart fa-2x"></i> --}}
-                {{!-- </div> --}}
-            
     </header>
-    <div>
-        <div class="topnav-container">
-            
+        <!-- <div class="topnav-container">
             <div id="product-topnav-section-div" class="product-topnav-section">
                 <div id="speakers-topnav" class="products-nav-img-div"
                     onclick="selectProductMenu('subType', 'regular');">
@@ -67,50 +61,30 @@
                     </div>
                 </div>
             </div>
-        </div>
+        </div> -->
 
-        <div class="banner-section"></div>
+        <br />
+        <br />
 
-    </div>
-
-    <div class="anything">
-
-        <div id="categorySection" class="category-section">
-            <ul>
-                <li><a href="/products?type=headphones&bestseller=true">Headphones</a></li>
-                <li><a href="/products?type=speakers">Speakers</a></li>
-                <li><a href="/products?subType=overtheear">Overtheear</a></li>
-                <li><a href="/products?subType=regular">Regular</a></li>
-                <li><a href="/products?subType=earbuds">Earbuds</a></li>
-                <li><a href="/products?subType=smart">Smart</a></li>
-
-
-            </ul>
-        </div>
-
-
-        <div id="products" class="product-section">{{{body}}}
-        </div>
-
+    <div class="main-section">
+        <div id="products" class="product-section">{{{body}}}</div>
     </div>
 
 
-    <div>
-        <div class="footer-section">
-            <div class="sm-icons-section">
-                <ul>
-                    <li><i class="fab fa-facebook-f"></i></li>
-                    <li><i class="fab fa-twitter"></i></li>
-                </ul>
-            </div>
-        </div>
-    </div>
     {{!-- <script src="datastore.js"></script> --}}
     <script src="script.js"></script>
-    <script src="https://code.jquery.com/jquery-3.4.1.slim.min.js" integrity="sha384-J6qa4849blE2+poT4WnyKhv5vZF5SrPo0iEjwBvKU7imGFAV0wwj1yYfoRSJoZ+n" crossorigin="anonymous"></script> 
-    <script src="https://cdn.jsdelivr.net/npm/popper.js@1.16.0/dist/umd/popper.min.js" integrity="sha384-Q6E9RHvbIyZFJoft+2mJbHaEWldlvI9IOYy5n3zV9zzTtmI3UksdQRVvoxMfooAo" crossorigin="anonymous"></script> 
+    <script src="https://code.jquery.com/jquery-3.4.1.slim.min.js" integrity="sha384-J6qa4849blE2+poT4WnyKhv5vZF5SrPo0iEjwBvKU7imGFAV0wwj1yYfoRSJoZ+n" crossorigin="anonymous"></script>
+    <script src="https://cdn.jsdelivr.net/npm/popper.js@1.16.0/dist/umd/popper.min.js" integrity="sha384-Q6E9RHvbIyZFJoft+2mJbHaEWldlvI9IOYy5n3zV9zzTtmI3UksdQRVvoxMfooAo" crossorigin="anonymous"></script>
     <script src="https://stackpath.bootstrapcdn.com/bootstrap/4.4.1/js/bootstrap.min.js" integrity="sha384-wfSDF2E50Y2D1uUdj0O3uMBJnjuUD4Ih7YwaYd1iqfktj0Uod8GCExl3Og8ifwB6" crossorigin="anonymous"></script>
-    
-</body>
 
+    <footer class="py-5 bg-black">
+            <span class="text-muted">@2020 copyright reserved</span>
+          <div class="sm-icons-section">
+              <ul>
+                  <li><i class="fab fa-facebook-f"></i></li>
+                  <li><i class="fab fa-twitter"></i></li>
+              </ul>
+          </div>
+    </footer>
+</body>
 </html>
