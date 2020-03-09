@@ -19,7 +19,8 @@ app.set("view engine", "handlebars");
 app.use(bodyParser.urlencoded({ extended: false }));
 
 //serves static files
-app.use(express.static("static"));
+app.use(express.static(path.join(__dirname, 'static')));
+app.set('views', path.join(__dirname, 'views'));
 
 //Route for the Home Page
 app.get("/", (req, res) => {
