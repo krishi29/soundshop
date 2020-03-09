@@ -17,6 +17,7 @@ app.set("view engine", "handlebars");
 
 // parse application/x-www-form-urlencoded
 app.use(bodyParser.urlencoded({ extended: false }));
+app.use(express.static('public'));
 
 //serves static files
 
