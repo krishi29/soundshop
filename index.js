@@ -42,7 +42,7 @@ app.get("/products", (req, res) => {
     if (req.query.subType && element.categories.subType !== req.query.subType || req.query.selectBestSeller) {
       select = false;
     }
-    if (req.query.selectBestSeller && element.bestSeller) {
+    if (req.query.selectBestSeller && element.isBestSeller) {
       select = true;
     }
 
