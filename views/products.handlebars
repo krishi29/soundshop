@@ -1,0 +1,36 @@
+<section>
+    {{#each products}}
+    <div class="product-card" id="{{this.id}}">
+        <div class="product-images">
+            <div id="{{this.id}}-carousel">
+                {{#each this.images}}
+                {{#if @first}}
+
+                <img src="./images/products/{{this}}" class="activeimage">
+                {{else}}
+                <img src="./images/products/{{this}}" class="inactiveimage">
+                {{/if}}
+                {{/each}}
+            </div>
+
+            <a class="prev" onclick="prevSlide('{{this.id}}')">❮</a>
+            <a class="next" onclick="plusSlides('{{this.id}}')">❯</a>
+        </div>
+        <div id="{{this.id}}-dots" class="slidedots">
+            {{#each this.images}}
+            <span class="dot" onclick="showSlides('{{../this.id}}',{{@index}})"></span>
+            {{/each}}
+        </div>
+        <div class="product-details">
+            <ul>
+                <li>{{this.name}} - ${{this.price}}</li>
+                <li class="itemDescription">{{this.description}}</li>
+                {{#if this.bestseller}}
+                <li>BestSeller</li>
+                {{/if}}
+            </ul>
+        </div>
+    </div>
+
+    {{/each}}
+</section>
