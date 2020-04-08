@@ -1,7 +1,7 @@
 <!-- Will only show if the errors array exists-->
 <div class="form_container">
     <span>
-        {{#if valid}}
+        
         <div>
             <h3 style="color:red;">{{Message}}</h3>
         </div>
@@ -24,13 +24,7 @@
             <p class="helperMessage"><a href="">Need help?</a></p>
             <input type="submit" id="submit" value="Sign-In">
         </form>
-        {{else}}
-        <div class=center>
-            <h1>Welcome!</h1><br>
-            <h1> {{data.email}}!</h1><br>
-        </div>
-
-        {{/if}}
+        
     </span>
 
 </div>

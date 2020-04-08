@@ -2,10 +2,12 @@ const express = require("express"); //this imports the express package  installe
 const exphbs = require("express-handlebars");
 const productModel = require("./model/datastore");
 const bodyParser = require("body-parser");
-var path = require('path');
+const mongoose = require('mongoose');
+const path = require('path');
+const session = require('express-session')
 
 //load the environment variable file
-require("dotenv").config({ path: "./config/key.env" });
+require('dotenv').config({ path: "./config/keys.env" });
 
 const app = express(); // this creates  express app object
 
@@ -61,9 +63,23 @@ app.get("/products", (req, res) => {
 const generalController = require("./controllers/general");
 //const productController = require("./controllers/product");
 
+//custom middleware functions
+app.use(session({
+  secret: '${process.env.SECRET_KEY}',
+  resave: false,
+  saveUninitialized: true,
+}))
+
 //map each controller to the app object
 app.use("/", generalController);
 //app.use("/product", productController);
+
+mongoose.connect(process.env.MONGO_DB_CONNECTION_STRING, {useNewUrlParser: true, useUnifiedTopology: true})
+.then(()=>{
+    console.log(`Connected to MongoDB Database`);
+})
+.catch(err=>console.log(`Error occured when connecting to database ${err}`));
+
 
 const port = process.env.PORT || 3000; ////process.env.PORT is used for HEROKU
 app.listen(port, () => {

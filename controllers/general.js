@@ -1,5 +1,10 @@
 const express = require("express");
 const router = express.Router();
+const userModel = require("../model/User");
+const bcrypt = require("bcryptjs");
+const isAuthenticated = require("../middleware/auth");
+const adminCheck = require("../middleware/authorization");
+
 
 // //home route
 // router.get("/",(req,res)=>{
@@ -57,18 +62,30 @@ const fakeDB = require("./../model/datastore");
 
 var customerInfo = [];
 
-router.get("/", function(req, res) {
+router.get("/", function (req, res) {
   res.render("general/home", {
     title: "home Page",
-    category: fakeDB.category - section
+    category: fakeDB.category - section,
   });
 });
 
-router.get("/sign-up", function(req, res) {
+router.get("/dashboard", isAuthenticated,adminCheck,function (req, res) {
+  res.render("general/dashboard", {
+    title: "dashboard"
+  });
+});
+
+router.get("/admin", isAuthenticated,adminCheck,function (req, res) {
+  res.render("general/admin", {
+    title: "admin"
+  });
+});
+
+router.get("/sign-up", function (req, res) {
   var inputError = true;
   res.render("general/signUp", {
     title: "Customer signUp",
-    valid: inputError
+    valid: inputError,
   });
 });
 
@@ -138,6 +155,20 @@ router.post("/sign-up", (req, res) => {
 
   //Asynchornous operation (who don't know how long this will take to execute)
   if (!inputError) {
+    const newUser = {
+      name: inputData.yourName,
+      email: inputData.email,
+      password: inputData.password,
+    };
+    const user = new userModel(newUser);
+    user
+      .save()
+      .then((user) => {
+        console.log(user);
+      })
+      .catch((err) =>
+        console.log(`Error while inserting into the data ${err}`)
+      );
     const sgMail = require("@sendgrid/mail");
     sgMail.setApiKey(process.env.SENDGRID_API_KEY);
     const msg = {
@@ -149,7 +180,7 @@ router.post("/sign-up", (req, res) => {
             Name: ${yourName} <br>
             Email: ${email}<br>
             Password: ${password}<br>
-            `
+            `,
     };
 
     sgMail
@@ -163,7 +194,7 @@ router.post("/sign-up", (req, res) => {
         customerInfo[customerInfo.length - 1].password = password;
       })
 
-      .catch(err => {
+      .catch((err) => {
         console.log(`Error ${err}`);
       });
   }
@@ -173,17 +204,22 @@ router.post("/sign-up", (req, res) => {
     error: errorMessage,
     errorID: errorType,
     data: inputData,
-    valid: inputError
+    valid: inputError,
   });
   inputError = false;
 });
 
-router.get("/sign-in", (req, res) => {
+router.get("/sign-in", isAuthenticated,(req, res) => {
   res.render("general/signIn", {
     title: "Sign In",
     headingInfo: "Sign In Page",
     valid: true
   });
+});
+
+router.get("/logout", (req, res) => {
+  req.session.destroy();
+  res.redirect("/sign-in")
 });
 
 router.post("/sign-in", (req, res) => {
@@ -211,14 +247,62 @@ router.post("/sign-in", (req, res) => {
     inputError = true;
     errorType.password = true;
   }
+  if (inputError) {
+    res.render("general/signIn", {
+      title: "Sign In",
+      headingInfo: "Sign In Page",
+      valid: inputError,
+      error: errorMessage,
+      errorID: errorType,
+    });
+  }
+  userModel .findOne({ email: email })
+    .then((userModel) => {
+      console.log(`User's information found in database!`);
+      console.log(userModel);
+      bcrypt
+        .compare(req.body.password, userModel.password)
+        .then((isMatched) => {
+          console.log(`Password matched: `, isMatched);
+          if (!isMatched) {
+            res.render("general/signIn", {
+              title: "Sign In",
+              headingInfo: "Sign In Page",
+              valid: inputError,
+              error: errorMessage,
+              errorID: errorType,
+            });
+          } else {
+            //create our session
+            req.session.userInfo = userModel;
+            res.redirect("/dashboard");
+          }
+        })
+        .catch((err) => {
+          console.log(`Error: `, err);
+          res.render("general/signIn", {
+            title: "Sign In",
+            headingInfo: "Sign In Page",
+            valid: inputError,
+            error: errorMessage,
+            errorID: errorType,
+          });
+        });
+    })
+    .catch((err) => {
+      res.render("general/signIn", {
+        title: "Sign In",
+        headingInfo: "Sign In Page",
+        valid: inputError,
+        error: errorMessage,
+        errorID: errorType,
+      });
+      console.log(`Error while fetching user's information in database!`, err);
+    });
 
-  res.render("general/signIn", {
-    title: "Sign In",
-    headingInfo: "Sign In Page",
-    valid: inputError,
-    error: errorMessage,
-    errorID: errorType
-  });
+  //If username or password is invalid or password is incorrect after comparing it in database
+  //then again go to signin page
+  //else go to dashboard page
 });
 
 //contact us route
@@ -227,7 +311,7 @@ router.get("/contact-us", (req, res) => {
   var inputError = true;
   res.render("general/contactUs.handlebars", {
     title: "Contact Page",
-    valid: inputError
+    valid: inputError,
   });
 });
 
@@ -274,16 +358,14 @@ router.post("/contact-us", (req, res) => {
   }
 
   if (inputError) {
-
     res.render("general/contactUs", {
-    title: "contact Us",
-    headingInfo: "Contact Us",
-    valid: inputError,
-    error: errorMessage,
-    errorID: errorType
+      title: "contact Us",
+      headingInfo: "Contact Us",
+      valid: inputError,
+      error: errorMessage,
+      errorID: errorType,
     });
   } else {
-
     const sgMail = require("@sendgrid/mail");
     sgMail.setApiKey(process.env.SENDGRID_API_KEY);
     const msg = {
@@ -293,7 +375,7 @@ router.post("/contact-us", (req, res) => {
       html: `Vistor's Full Name ${firstName} ${lastName} <br>
      Vistor's Email Address ${email} <br>
      Vistor's message : ${message}<br>
-    `
+    `,
     };
 
     //Asynchornous operation (who don't know how long this will take to execute)
@@ -301,21 +383,20 @@ router.post("/contact-us", (req, res) => {
       .send(msg)
       .then(() => {
         res.render("general/contactUs", {
-    title: "contact Us",
-    headingInfo: "Contact Us",
-    valid: inputError
-
-    });
+          title: "contact Us",
+          headingInfo: "Contact Us",
+          valid: inputError,
+        });
       })
-      .catch(err => {
+      .catch((err) => {
         console.log(`Error ${err}`);
         res.render("general/contactUs", {
-            title: "contact Us",
-            headingInfo: "Contact Us",
-            valid: true,
-            error: err,
-            errorID: errorType
-            });
+          title: "contact Us",
+          headingInfo: "Contact Us",
+          valid: true,
+          error: err,
+          errorID: errorType,
+        });
       });
   }
 });
