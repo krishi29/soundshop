@@ -9,12 +9,7 @@ const dashBoardLoader = (req, res, next) => {
   ) {
     next();
   } else{
-    if(req.session.userInfo.type == "Admin"){
-        res.redirect("/admin");
-      }
-      else {
-        res.redirect("/dashboard");
-      }
+    next();
       
   }
   
