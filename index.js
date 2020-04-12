@@ -5,6 +5,7 @@ const bodyParser = require("body-parser");
 const mongoose = require('mongoose');
 const path = require('path');
 const session = require('express-session')
+const fileUpload = require('express-fileupload');
 var methodOverride = require('method-override')
 
 //load the environment variable file
@@ -18,6 +19,12 @@ var hbs = exphbs.create({
 //This tells express to set up our template engine has handlebars
 app.engine("handlebars", hbs.engine);
 app.set("view engine", "handlebars");
+
+app.use(fileUpload({
+  limits: {
+    fileSize: 50 * 1024 * 1024
+  }
+}));
 
 // parse application/x-www-form-urlencoded
 app.use(bodyParser.urlencoded({ extended: false }));
@@ -34,7 +41,6 @@ app.use((req,res,next)=>{
     }
     next();
 })
-
 
 //Route for the Home Page
 app.get("/", (req, res) => {

@@ -5,6 +5,7 @@ const productModel = require("../model/product");
 const isAuthenticated = require("../middleware/auth");
 const appendUser = require("../middleware/appendUser");
 const isAdmin = require("../middleware/adminAuth");
+const filesystem = require('fs')
 var isClerkDelete = false;
 
 const filterProducts = (products, query) => {
@@ -35,13 +36,6 @@ const filterProducts = (products, query) => {
 
   return selectedProducts;
 }
-
-router.get("/insert-all", (req, res) => {
-  var allProducts = productList.getProducts();
-  productModel.find()
-  .then((products) => res.send(products))
-  .catch((err) => res.send(err))
-});
 
 router.get("/", appendUser, (req, res) => {
   productModel.find()
@@ -75,33 +69,61 @@ router.post("/add", isAuthenticated, appendUser, isAdmin, function (req, res) {
   var inputError = false;
   var errorType = {};
   var errorMessage = {};
-  console.log(req.body);
+
+  const productItem = {
+    name: productjson.name,
+    categories: {
+      subType: productjson.subType,
+      brand: productjson.brand
+    },
+    type: productjson.type,
+    price: productjson.price,
+    isBestSeller: productjson.isBestSeller ? true : false,
+    description: productjson.description
+  };
+
+  if (!Array.isArray(req.files.images)) {
+    req.files.images = [req.files.images]
+  }
+
+  // Images are uploaded
+  if (req.files.images) {
+    productItem["images"] = []
+
+    req.files.images.map((image) => {
+      productItem.images.push(image.name)
+
+      image.mv(__dirname + '/../static/images/products/' + image.name, function(err) {
+        if(err){
+          console.log(err);
+          inputError = true
+        } else{
+          console.log("uploaded");
+        }
+      });
+    });
+  }
+
   if (!inputError) {
-    const productItem = {
-      name: productjson.name,
-      categories: {
-        subType: productjson.subType,
-        brand: productjson.brand
-      },
-      type: productjson.type,
-      price: productjson.price,
-      isBestSeller: productjson.isBestSeller ? true : false,
-      description: productjson.description,
-    };
     const product = new productModel(productItem);
     product
     .save()
     .then((product) => {
-      console.log(product);
+      res.render("products/add", {
+        title: "Add Product",
+        message: `Product ${product.name} added successfully.`,
+        valid: false,
+      });
     })
     .catch((err) => console.log(`Error while inserting inventory ${err}`));
+  } else {
+    res.render("products/add", {
+      title: "Add Product",
+      error: errorMessage,
+      errorID: errorType,
+      valid: inputError,
+    });
   }
-  res.render("products/add", {
-    title: "Add Product",
-    error: errorMessage,
-    errorID: errorType,
-    valid: inputError,
-  });
 });
 
 router.get("/edit/:id", isAuthenticated, appendUser, isAdmin, function (req, res) {
@@ -145,20 +167,42 @@ router.put("/edit/:id", isAuthenticated, appendUser, isAdmin, function (req, res
   var errorType = {};
   var errorMessage = {};
 
-  console.log(productJson)
-  if (!inputError) {
-    const productItem = {
-      name: productJson.name,
-      categories: {
-        subType: productJson.subType,
-        brand: productJson.brand
-      },
-      type: productJson.type,
-      price: productJson.price,
-      isBestSeller: productJson.isBestSeller ? true : false,
-      description: productJson.description,
-    };
+  const productItem = {
+    name: productJson.name,
+    categories: {
+      subType: productJson.subType,
+      brand: productJson.brand
+    },
+    type: productJson.type,
+    price: productJson.price,
+    isBestSeller: productJson.isBestSeller ? true : false,
+    description: productJson.description
+  };
 
+  if (!Array.isArray(req.files.images)) {
+    req.files.images = [req.files.images]
+  }
+
+  // Images are uploaded
+  if (req.files.images) {
+    productItem["images"] = []
+
+    req.files.images.map((image) => {
+      productItem.images.push(image.name)
+
+      image.mv(__dirname + '/../static/images/products/' + image.name, function(err) {
+        if(err){
+          console.log(err);
+          inputError = true
+        } else{
+          console.log("uploaded");
+        }
+      });
+    });
+
+  }
+
+  if (!inputError) {
     productModel.updateOne({_id: productId}, productItem)
     .then((product) => {
       // console.log(`Product successfull edited: ${product}`)
@@ -185,13 +229,22 @@ router.put("/edit/:id", isAuthenticated, appendUser, isAdmin, function (req, res
 router.delete("/delete/:id", isAuthenticated, appendUser, isAdmin, function (req, res) {
   const productId = req.params.id;
 
-  productModel.deleteOne({
+  productModel.findOneAndDelete({
     _id: productId
-  }, function(err,obj) {
+  }, function(err, obj) {
     if (err) {
       console.log(`Error occured while deleting product with id ${productId}: ${err}`)
       res.render('404', { url: req.url });
       return;
+    }
+
+    const productJson = JSON.parse(JSON.stringify(obj));
+    console.log(productJson)
+    if (productJson.images) {
+      productJson.images.map((imageName) => {
+        console.log("Deleting file: ", __dirname + "/../static/images/products/" + imageName)
+        filesystem.unlinkSync(__dirname + "/../static/images/products/" + imageName)
+      })
     }
 
     res.redirect("/products");
