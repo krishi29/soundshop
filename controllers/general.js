@@ -3,7 +3,8 @@ const router = express.Router();
 const userModel = require("../model/User");
 const bcrypt = require("bcryptjs");
 const isAuthenticated = require("../middleware/auth");
-const adminCheck = require("../middleware/authorization");
+const appendUser = require("../middleware/appendUser");
+const isAdmin = require("../middleware/adminAuth");
 
 
 // //home route
@@ -69,13 +70,13 @@ router.get("/", function (req, res) {
   });
 });
 
-router.get("/dashboard", isAuthenticated,adminCheck,function (req, res) {
+router.get("/dashboard", isAuthenticated, appendUser, function (req, res) {
   res.render("general/dashboard", {
     title: "dashboard"
   });
 });
 
-router.get("/admin", isAuthenticated,adminCheck,function (req, res) {
+router.get("/admin", isAuthenticated, appendUser, isAdmin, function (req, res) {
   res.render("general/admin", {
     title: "admin"
   });
@@ -209,7 +210,7 @@ router.post("/sign-up", (req, res) => {
   inputError = false;
 });
 
-router.get("/sign-in", isAuthenticated,(req, res) => {
+router.get("/sign-in",(req, res) => {
   res.render("general/signIn", {
     title: "Sign In",
     headingInfo: "Sign In Page",
@@ -275,7 +276,13 @@ router.post("/sign-in", (req, res) => {
           } else {
             //create our session
             req.session.userInfo = userModel;
-            res.redirect("/dashboard");
+            console.log(`Loading dashboard page for: ${userModel}`)
+            console.log(`${userModel.type}`)
+            if (userModel.type === 'Admin') {
+                res.redirect("/admin");
+            } else {
+                res.redirect("/dashboard");
+            }
           }
         })
         .catch((err) => {

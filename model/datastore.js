@@ -1,10 +1,7 @@
 /** Add any JavaScript you need to this file. */
-
-
-
 var productsData = [
     {
-        id: "beatssolo",
+        __id: "beatssolo",
         name: "Beats Solo",
         description: "Beats Solo. Stylish headphones with great sound. ",
         price: "399.99",
@@ -24,7 +21,7 @@ var productsData = [
         ]
     },
     {
-        id: "bosewireless",
+        __id: "bosewireless",
         name: "Bose wireless",
         description: "Bose wireless. Comfortable headphones by Bose.",
         price: "499.99",
@@ -43,7 +40,7 @@ var productsData = [
         ]
     },
     {
-        id: "bosemini",
+        __id: "bosemini",
         name: "Bose Mini",
         description: "Smal speakers with big sound.",
         price: "99.99",
@@ -56,7 +53,7 @@ var productsData = [
         images: ["bose speaker 3.jpg"]
     },
     {
-        id: "bosen140",
+        __id: "bosen140",
         name: "Bose N140",
         description:
             "Bose noise cancelling headphones. Great sound, great battery life and great noise cancellation.",
@@ -70,7 +67,7 @@ var productsData = [
         images: ["bose n140 1.jpg", "bose n140 2.jpg", "bose n140 3.jpg"]
     },
     {
-        id: "boses1800",
+        __id: "boses1800",
         name: "Bose S1800",
         description:
             "Bose speakers. Great with your TV or with any audio devices.",
@@ -84,7 +81,7 @@ var productsData = [
         images: ["bose speaker 1.jpg", "bose speaker 2.jpg"]
     },
     {
-        id: "edifiernk1",
+        __id: "edifiernk1",
         name: "Edifier NK1",
         description: "Speakers with surround sound. Set of 8.",
         price: "499.99",
@@ -97,7 +94,7 @@ var productsData = [
         images: ["edifier 1.jpg"]
     },
     {
-        id: "genericairbuds",
+        __id: "genericairbuds",
         name: "Generic earbuds",
         description:
             "Wireless earbuds for everyday use. Great for voice calls too.",
@@ -117,7 +114,7 @@ var productsData = [
         ]
     },
     {
-        id: "googlehome",
+        __id: "googlehome",
         name: "Google Home",
         description:
             "Smart speakers for your home. Makes google a part of your life.",
@@ -132,7 +129,7 @@ var productsData = [
         images: ["google home 1.jpg", "google home 2.jpg"]
     },
     {
-        id: "ghomenuki",
+        __id: "ghomenuki",
         name: "Google Home - Nuki Package",
         description:
             "Google Home with additional Nuki Speakers. The smart speakers with great sound.",
@@ -146,7 +143,7 @@ var productsData = [
         images: ["google home with nuki 1.jpg"]
     },
     {
-        id: "ghomemini",
+        __id: "ghomemini",
         name: "Google Home Mini",
         description: "Google Home - The Mini Version.",
         price: "99.99",
@@ -159,7 +156,7 @@ var productsData = [
         images: ["google home mini1.jpg", "google home mini2.jpg"]
     },
     {
-        id: "marshalbrown",
+        __id: "marshalbrown",
         name: "Marshal Brown",
         description: "Marhsal headphones with noise cancellation",
         price: "399.99",
@@ -176,7 +173,7 @@ var productsData = [
         ]
     },
     {
-        id: "marshalmini",
+        __id: "marshalmini",
         name: "Marshal Mini",
         description: "Small speakers by Marshal",
         price: "49.99",
@@ -189,7 +186,7 @@ var productsData = [
         images: ["marshal mini 1.jpg", "marshal mini 2.jpg"]
     },
     {
-        id: "monstere1",
+        __id: "monstere1",
         name: "Monster E1",
         description: "Powerful Earbuds by Monster",
         price: "149.99",
@@ -202,7 +199,7 @@ var productsData = [
         images: ["monster earbuds 1.jpg"]
     },
     {
-        id: "samsumgs121",
+        __id: "samsumgs121",
         name: "Samsung S121",
         description: "Powerful Earbuds by Samsung.",
         price: "299.99",
@@ -216,7 +213,7 @@ var productsData = [
         images: ["samsung headphones 1.jpg"]
     },
     {
-        id: "sheiserboom",
+        __id: "sheiserboom",
         name: "Sennheiser Boom",
         description:
             "Great speakers by Sennheiser. Great for use with any multimedia device.",
@@ -230,7 +227,7 @@ var productsData = [
         images: ["sennheiser 1.jpg"]
     },
     {
-        id: "sonosone",
+        __id: "sonosone",
         name: "Sonos One",
         description:
             "Speakers by Sonos. Great sound with amazing battery life.",
@@ -244,7 +241,7 @@ var productsData = [
         images: ["sonos 1.jpg", "sonos 2.jpg"]
     },
     {
-        id: "sonosmega",
+        __id: "sonosmega",
         name: "Sonos Mega",
         description: "Music box by Sonos. Great volume and crisp sound.",
         price: "249.99",
@@ -257,7 +254,7 @@ var productsData = [
         images: ["sonos amazon 1.jpg", "sonos amazon 2.jpg"]
     },
     {
-        id: "sonyak1",
+        __id: "sonyak1",
         name: "Sony AK1",
         description: "Powerful headphones by Sony.",
         price: "499.99",
@@ -271,7 +268,7 @@ var productsData = [
         images: ["sony headphones 1.jpg"]
     },
     {
-        id: "genericbolt",
+        __id: "genericbolt",
         name: "Generic Bolt",
         description: "Small waterproof speakers that pack a punch. ",
         price: "99.99",
@@ -284,7 +281,7 @@ var productsData = [
         images: ["generic speakers 1.jpg"]
     },
     {
-        id: "acyearbuds",
+        __id: "acyearbuds",
         name: "ACY earbuds",
         description:
             "Wireless earbuds by ACY. Strong Bass and comfortable in the ear",
@@ -298,7 +295,7 @@ var productsData = [
         images: ["acy earbuds1.jpg"]
     },
     {
-        id: "airpods",
+        __id: "airpods",
         name: "Airpods",
         description: "Airpods by apple. Great sound and great battery life",
         price: "219.99",
@@ -317,7 +314,7 @@ var productsData = [
         ]
     },
     {
-        id: "airpodspro",
+        __id: "airpodspro",
         name: "Airpods Pro",
         description: "Airpods Pro. Latest Version. Better than ever.",
         price: "299.99",
@@ -332,7 +329,7 @@ var productsData = [
         images: ["airpods pro 1.jpg", "airpods pro 2.jpg"]
     },
     {
-        id: "alexa",
+        __id: "alexa",
         name: "Amazon Alexa",
         description: "Introducing Alexa, the smart speaker by Amazon.",
         price: "299.99",
@@ -346,7 +343,7 @@ var productsData = [
         images: ["amazon alexa 1.jpg"]
     },
     {
-        id: "sheiserpilot",
+        __id: "sheiserpilot",
         name: "Sennheiser Pilot",
         description:
             "Wireless headphones with 18 hours battery life. Great noise cancellation and great sound. ",

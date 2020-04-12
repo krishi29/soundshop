@@ -29,6 +29,10 @@ body header {
   position: sticky;
 }
 
+.container-fluid {
+    overflow: auto;
+}
+
 .navbar:before, .navbar:after {
   content: none;
   position: fixed;
@@ -190,7 +194,7 @@ input[type="checkbox"] {
     padding: 8px;
 }
 
-form {
+/* form {
 
     width: 70%;
     display: block;
@@ -205,9 +209,9 @@ form {
     justify-content: space-between;
     margin: 8px 0;
     border: 3px  #f1f1f1;
-}
+} */
 
-input[type=text], input[type=password] {
+input[type=text], input[type=password], input[type=number] {
     width: 60%;
     padding: 15px;
     margin: 5px 0 22px 0;
@@ -215,7 +219,6 @@ input[type=text], input[type=password] {
     border: 1px solid #ccc;
     box-sizing: border-box;
     border-radius: 4px;
-    background-color: #ddd;
     outline: none;
   }
 
@@ -407,9 +410,11 @@ button {
     height: 400px;
     float: left;
     position: relative;
-    margin: 0px 15px 10px 15px;
+    margin: 10px 10px 10px 10px;
     font-weight: 600;
     z-index: 5;
+    display: grid;
+    text-align: center;
 }
 
 .product-images img {
@@ -423,8 +428,8 @@ button {
 }
 
 .product-images {
-    top: 0;
-    position: absolute;
+    /* top: 0; */
+    position: relative;
     width: 300px;
     height: 240px;
     overflow: hidden;
@@ -433,8 +438,14 @@ button {
 
 .product-details {
     display: block;
-    position: absolute;
-    top: 275px;
+    position: relative;
+    /* top: 275px; */
+}
+
+.product-edit {
+    display: block;
+    position: relative;
+    /* top: 340px; */
 }
 
 .product-details ul {
@@ -442,6 +453,20 @@ button {
     padding-inline-start: 0px;
     margin-block-start: 0;
 }
+
+.product-edit-button-container {
+  position: relative;
+  padding: 1px
+}
+
+.product-list-container {
+  width: 100%;
+  padding-right: 15px;
+  padding-left: 15px;
+  margin-right: 10px;
+  margin-left: 10px;
+}
+
 .category-section ul{
     list-style: none;
 }
@@ -495,11 +520,10 @@ button {
     background-color: #717171;
 }
 
-.slidedots {
+.product-slidedots {
     text-align: center;
     width: 100%;
-    position: absolute;
-    top: 250px;
+    position: relative;
 }
 
 .inactiveimage {

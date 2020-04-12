@@ -1,0 +1,77 @@
+<div class="container">
+    <form id="add" action="/products/add" method="POST">
+      <div class="form-group row">
+        <label for="name" class="col-sm-2 col-form-label"><b>Name</b></label>
+        <div class="col-sm-10">
+          <input class="form-control " type="text" {{#if errorID.name}} class="error_redFrame" {{/if}} id="name" name="name" autocomplete="name"
+              value="{{data.name}}" />
+        </div>
+      </div>
+      <div class="form-group row">
+        <label for="description" class="col-sm-2 col-form-label"><b>Description</b></label>
+        <div class="col-sm-10">
+          <input class="form-control" type="text" name="description"
+            {{#if errorID.description}} class="error_redFrame" {{/if}} />
+        </div>
+      </div>
+      <div class="form-group row">
+        <label for="price" class="col-sm-2 col-form-label"><b>Price</b></label>
+        <div class="col-sm-10">
+          <input class="form-control" type="number" name="price" {{#if errorID.price}} class="error_redFrame" {{/if}} />
+        </div>
+      </div>
+      <div class="form-group row">
+        <label for="type" class="col-sm-2 col-form-label"><b>Type</b></label>
+        <div class="col-sm-10">
+          <input type="text" name="type" {{#if errorID.type}} class="error_redFrame" {{/if}} />
+        </div>
+      </div>
+      <div class="form-group row">
+        <label for="subType" class="col-sm-2 col-form-label"><b>SubType</b></label><br />
+        <div class="col-sm-10">
+          <select class="form-control" form="add" name="subType" id="subType" style="width: 60%;">
+              <option ></option>
+              <option value="overtheear">Overtheear</option>
+              <option value="regular">Regular</option>
+              <option value="earbuds">Earbuds</option>
+              <option value="smart">Smart</option>
+          </select>
+        </div>
+      </div>
+      <div class="form-group row">
+        <label for="brand" class="col-sm-2 col-form-label"><b>Brand</b></label>
+        <div class="col-sm-10">
+          <select class="form-control" form="add" name="brand" id="brand" style="width: 60%;">
+              <option ></option>
+              <option value="bose">Bose</option>
+              <option value="edifier">Edifier</option>
+              <option value="generic">Generic</option>
+              <option value="google">Google</option>
+              <option value="marshal">Marshal</option>
+              <option value="monster">Monster</option>
+              <option value="sennheiser">Sennheiser</option>
+              <option value="sonos">Sonos</option>
+              <option value="sony">Sony</option>
+              <option value="acy">ACY</option>
+              <option value="apple">Apple</option>
+              <option value="amazon">Amazon</option>
+              <option value="beats">Beats</option>
+          </select>
+        </div>
+      </div>
+
+        <div class="form-group row">
+          <label for="isBestSeller" class="col-sm-2 col-form-label"><b>Best Seller?</b></label>
+          <div class="col-sm-10">
+            <input type="checkbox" id="isBestSeller" name="isBestSeller" checked />
+          </div>
+        </div>
+
+        <div class="form-group row">
+          <div class="col-sm-12">
+            <button type="button" class="cancelbtn">Cancel</button>
+            <button type="submit" class="addbtn">Add Item</button>
+          </div>
+        </div>
+    </form>
+</div>

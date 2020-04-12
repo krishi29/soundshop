@@ -3,6 +3,10 @@
 var userSelection = {};
 var availableCategories = {};
 
+function goBack() {
+  window.history.back();
+}
+
 function setupPage() {
     var productsDiv = document.getElementById("products");
     productsDiv.innerHTML = "";
