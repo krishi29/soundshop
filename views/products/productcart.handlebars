@@ -1,8 +1,5 @@
 <section class="product-list-container">
-  {{#if message.success}}
-    <div class="alert alert-primary" role="alert">{{message.success}}</div>
-  </if>
-  {{/if}}
+  <h2> Products in Cart </h2>
   {{#if message.error}}
     <div class="alert alert-danger" role="alert">{{message.error}}</div>
   </if>
@@ -37,35 +34,15 @@
               {{/if}}
           </ul>
       </div>
-      {{#if ../user.isAdmin}}
-      <div class="product-edit">
-        <div class="product-edit-button-container">
-          <span class="glyphicon glyphicon-edit glyphicon" />
-          <a href="/products/edit/{{this._id}}" class="edit-delete-button">Edit</a>
-        </div>
-        <div class="product-edit-button-container">
-          <span class="glyphicon glyphicon-trash glyphicon" />
-          <a href="/products/delete/{{this._id}}?_method=DELETE" class="edit-delete-button">Delete</a>
-        </div>
-      </div>
-      {{/if}}
-      {{#if ../user}}
-        {{#if this.isInCart}}
-          <div class="product-edit">
-            <div class="product-edit-button-container">
-              <span class="glyphicon glyphicon-ok" />
-              <span>Added to Cart</span>
-            </div>
-          </div>
-        {{else}}
-        <div class="product-edit">
-          <div class="product-edit-button-container">
-            <span class="glyphicon glyphicon-shopping-cart" />
-            <a href="/products/add-cart/{{../user._id}}/{{this._id}}?_method=PUT" class="edit-delete-button">Add to Cart</a>
-          </div>
-        </div>
-        {{/if}}
-      {{/if}}
   </div>
   {{/each}}
 </section>
+<div class="container">
+{{#if products.length}}
+  <div class="checkout-btn-container">
+    <button class="primary checkout-btn" onclick="window.location.href='/products/checkout?_method=DELETE';" style="text-align: center">Checkout</button>
+  </div>
+  {{else}}
+    <div class="alert alert-warning" role="alert">Cart is empty.</div>
+{{/if}}
+</div>

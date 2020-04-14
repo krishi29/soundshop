@@ -38,7 +38,24 @@ body header {
   position: fixed;
 }
 
+.main-cart .tooltiptext {
+  visibility: hidden;
+  width: 60px;
+  top: 15px;
+  background-color: white;
+  color: black;
+  text-align: center;
+  padding: 5px;
+  border-radius: 6px;
+  position: relative;
+  z-index: 1;
+}
 
+.main-cart:hover .tooltiptext {
+  visibility: visible;
+  left: 50px;
+  top: 40px;
+}
 
 .main-section{
     display: flex;
@@ -465,6 +482,16 @@ button {
   padding-left: 15px;
   margin-right: 10px;
   margin-left: 10px;
+  overflow:auto;
+}
+
+.checkout-btn {
+  padding: 10px;
+  margin: 10px;
+}
+
+.checkout-btn-container {
+  text-align: center;
 }
 
 .category-section ul{

@@ -2,11 +2,32 @@ const express = require("express");
 const router = express.Router();
 const productList = require("./../model/datastore");
 const productModel = require("../model/product");
+const userCartModel = require("../model/UserCart");
 const isAuthenticated = require("../middleware/auth");
 const appendUser = require("../middleware/appendUser");
 const isAdmin = require("../middleware/adminAuth");
 const filesystem = require('fs')
 var isClerkDelete = false;
+
+const fetchAllProducts = async (user, userCart={}, filter={}) => {
+  var products = await productModel.find(filter).exec();
+  products = JSON.parse(JSON.stringify(products))
+
+  if (user && Object.entries(userCart).length === 0) {
+    userCart = await userCartModel.findOne({userId: user._id}).exec();
+  }
+
+  if (userCart) {
+    const productsInCart = new Set(userCart.products);
+
+    products = products.map((product) => {
+      product['isInCart'] = productsInCart.has(product._id)
+      return product
+    });
+  }
+
+  return products;
+}
 
 const filterProducts = (products, query) => {
   var selectedProducts = [];
@@ -37,34 +58,70 @@ const filterProducts = (products, query) => {
   return selectedProducts;
 }
 
-router.get("/", appendUser, (req, res) => {
-  productModel.find()
-  .then((allProducts) => {
-    // console.log(allProducts);
-    res.render("products/productlist", {
-      title: "Products",
-      headingInfo: "Products Page",
-      products: filterProducts(allProducts, req.query)
-    });
-  })
-  .catch((err) => {
-    console.log(`Error while fetching list of products: ${err}`)
-    res.render("products/productlist", {
-      title: "Products",
-      headingInfo: "Products Page",
-      products: []
-    });
-  })
+router.get("/", appendUser, async (req, res) => {
+  const allProducts = await fetchAllProducts(req.session.userInfo)
+  var message = {}
+
+  if (req.session) {
+    message = req.session.message
+  }
+
+  res.render("products/productlist", {
+    title: "Products",
+    headingInfo: "Products Page",
+    products: filterProducts(allProducts, req.query),
+    message: message
+  });
 });
 
-router.get("/add", isAuthenticated, appendUser, isAdmin, function (req, res) {
+router.get("/add", isAuthenticated, appendUser, isAdmin, function(req, res) {
   res.render("products/add", {
     title: "Add Product",
     valid: true,
   });
 });
 
-router.post("/add", isAuthenticated, appendUser, isAdmin, function (req, res) {
+
+router.get("/cart", isAuthenticated, appendUser, async (req, res) => {
+  const user = req.session.userInfo
+  const userCart = await userCartModel.findOne({userId: user._id}).exec();
+  var products = []
+
+  if (userCart) {
+    const filter = {
+      _id: userCart.products
+    }
+    products = await fetchAllProducts(req.session.userInfo, userCart, filter);
+  }
+
+  res.render("products/productcart", {
+    title: "View Cart",
+    products: products
+  });
+});
+
+router.delete("/checkout", isAuthenticated, appendUser, async (req, res) => {
+  const user = req.session.userInfo
+
+  userCartModel.deleteOne({
+    userId: user._id
+  }, function(err, obj) {
+    if (err) {
+      console.log(`Cart can not be cleared: ${err}`)
+      res.render('404', {
+        url: req.url
+      });
+      req.session['message'] = {
+        error: "Not able to checkout the cart."
+      }
+    }
+    console.log(`Cart cleared successfully: ${err}`)
+    res.redirect("/products/cart");
+  });
+
+});
+
+router.post("/add", isAuthenticated, appendUser, isAdmin, function(req, res) {
   const productjson = req.body;
   var inputError = false;
   var errorType = {};
@@ -94,10 +151,10 @@ router.post("/add", isAuthenticated, appendUser, isAdmin, function (req, res) {
       productItem.images.push(image.name)
 
       image.mv(__dirname + '/../static/images/products/' + image.name, function(err) {
-        if(err){
+        if (err) {
           console.log(err);
           inputError = true
-        } else{
+        } else {
           console.log("uploaded");
         }
       });
@@ -107,15 +164,15 @@ router.post("/add", isAuthenticated, appendUser, isAdmin, function (req, res) {
   if (!inputError) {
     const product = new productModel(productItem);
     product
-    .save()
-    .then((product) => {
-      res.render("products/add", {
-        title: "Add Product",
-        message: `Product ${product.name} added successfully.`,
-        valid: false,
-      });
-    })
-    .catch((err) => console.log(`Error while inserting inventory ${err}`));
+      .save()
+      .then((product) => {
+        res.render("products/add", {
+          title: "Add Product",
+          message: `Product ${product.name} added successfully.`,
+          valid: false,
+        });
+      })
+      .catch((err) => console.log(`Error while inserting inventory ${err}`));
   } else {
     res.render("products/add", {
       title: "Add Product",
@@ -126,15 +183,17 @@ router.post("/add", isAuthenticated, appendUser, isAdmin, function (req, res) {
   }
 });
 
-router.get("/edit/:id", isAuthenticated, appendUser, isAdmin, function (req, res) {
+router.get("/edit/:id", isAuthenticated, appendUser, isAdmin, function(req, res) {
   const productId = req.params.id;
 
   productModel.findOne({
     _id: productId
-  }, function(err,obj) {
+  }, function(err, obj) {
     if (err | !obj) {
       console.log(`Error occured while fetching product with id ${productId}: ${err}`)
-      res.render('404', { url: req.url });
+      res.render('404', {
+        url: req.url
+      });
       return;
     }
     const productJson = JSON.parse(JSON.stringify(obj));
@@ -159,7 +218,7 @@ router.get("/edit/:id", isAuthenticated, appendUser, isAdmin, function (req, res
 });
 
 
-router.put("/edit/:id", isAuthenticated, appendUser, isAdmin, function (req, res) {
+router.put("/edit/:id", isAuthenticated, appendUser, isAdmin, function(req, res) {
   const productId = req.params.id
 
   const productJson = req.body;
@@ -191,10 +250,10 @@ router.put("/edit/:id", isAuthenticated, appendUser, isAdmin, function (req, res
       productItem.images.push(image.name)
 
       image.mv(__dirname + '/../static/images/products/' + image.name, function(err) {
-        if(err){
+        if (err) {
           console.log(err);
           inputError = true
-        } else{
+        } else {
           console.log("uploaded");
         }
       });
@@ -203,20 +262,22 @@ router.put("/edit/:id", isAuthenticated, appendUser, isAdmin, function (req, res
   }
 
   if (!inputError) {
-    productModel.updateOne({_id: productId}, productItem)
-    .then((product) => {
-      // console.log(`Product successfull edited: ${product}`)
-      res.redirect("/products");
-    })
-    .catch((err) => {
-      console.log(`Error while updating product ${productId} and value ${productItem} ${err}`)
+    productModel.updateOne({
+        _id: productId
+      }, productItem)
+      .then((product) => {
+        // console.log(`Product successfull edited: ${product}`)
+        res.redirect("/products");
+      })
+      .catch((err) => {
+        console.log(`Error while updating product ${productId} and value ${productItem} ${err}`)
 
-      res.render("products/edit", {
-        title: "Products Page",
-        product: productJson,
-        valid: true
+        res.render("products/edit", {
+          title: "Products Page",
+          product: productJson,
+          valid: true
+        });
       });
-    });
   } else {
     res.render("products/edit", {
       title: "Products Page",
@@ -226,7 +287,101 @@ router.put("/edit/:id", isAuthenticated, appendUser, isAdmin, function (req, res
   }
 });
 
-router.delete("/delete/:id", isAuthenticated, appendUser, isAdmin, function (req, res) {
+router.put("/add-cart/:userId/:productId", isAuthenticated, appendUser, async (req, res) => {
+  const user = req.session.userInfo;
+  const userId = req.params.userId;
+  const productId = req.params.productId;
+
+  if (!user) {
+    res.redirect("/sign-in");
+    return;
+  }
+
+  if (!userId || !productId) {
+    res.render("404");
+    return;
+  }
+
+  var message = {};
+  var allProducts = []
+  var isError = false
+  userCartModel.findOne({
+      userId: userId
+    })
+    .then(async (userCart) => {
+      var cartExists = true;
+      if (!userCart) {
+        cartExists = false;
+        userCart = {
+          email: user.email,
+          userId: userId,
+          products: []
+        }
+      }
+      userCart.products.push(productId)
+      userCart.products = Array.from(new Set(userCart.products));
+
+      console.log(`User Cart Before Update, After Adding: ${userCart}`)
+
+      if (cartExists) {
+        userCartModel.updateOne({
+            _id: userCart._id
+          }, userCart)
+          .then(async (userCartCreated) => {
+            userCartUpdated = JSON.parse(JSON.stringify(userCartCreated));
+
+            message = {
+              success: "Product successfully added to the cart."
+            }
+
+            req.session.message = message
+            res.redirect('/products')
+          }).catch(async (err) => {
+            console.log(`Error while fetching existing cart id for user: ${userId} & product: ${productId} with error ${err}`)
+            isError = true
+            message = {
+              error: "Could not add product to the cart. Please try again."
+            }
+
+            req.session.message = message
+            res.redirect('/products')
+          });
+      } else {
+        const userCartSchema = new userCartModel(userCart);
+        userCartSchema.save()
+          .then((userCartCreated) => {
+            userCartCreated = JSON.parse(JSON.stringify(userCartCreated));
+            console.log(`User Cart Created: ${userCartCreated._id}`)
+            message = {
+              success: "Product successfully added to the cart."
+            }
+          }).catch(async (err) => {
+            console.log(`Error while fetching existing cart id for user: ${userId} & product: ${productId}`)
+            isError = true
+            message = {
+              error: "Could not add product to the cart. Please try again."
+            }
+
+            req.session.message = message
+            res.redirect('/products')
+          });
+      }
+    })
+    .catch(async (err) => {
+      console.log(`Error while fetching existing cart id for user: ${userId} & product: ${productId}: ${err}`)
+      isError = true
+      message = {
+        error: "Could not add product to the cart. Please try again."
+      }
+
+      req.session.message = message
+      res.redirect('/products')
+    }).finally(() => {
+
+    });
+});
+
+router.delete("/delete/:id", isAuthenticated, appendUser, isAdmin, function(req, res) {
   const productId = req.params.id;
 
   productModel.findOneAndDelete({
@@ -234,12 +389,13 @@ router.delete("/delete/:id", isAuthenticated, appendUser, isAdmin, function (req
   }, function(err, obj) {
     if (err) {
       console.log(`Error occured while deleting product with id ${productId}: ${err}`)
-      res.render('404', { url: req.url });
+      res.render('404', {
+        url: req.url
+      });
       return;
     }
 
     const productJson = JSON.parse(JSON.stringify(obj));
-    console.log(productJson)
     if (productJson.images) {
       productJson.images.map((imageName) => {
         console.log("Deleting file: ", __dirname + "/../static/images/products/" + imageName)

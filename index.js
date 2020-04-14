@@ -39,6 +39,9 @@ app.use((req,res,next)=>{
     if(req.query._method=="DELETE") {
         req.method="DELETE"
     }
+    if(req.query._method=="PUT") {
+        req.method="PUT"
+    }
     next();
 })
 

@@ -1,8 +1,6 @@
 <div class="container">
     {{#if message}}
-    <div class="alert alert-primary" role="alert">
-      {{message}}
-    </div>
+      <div class="alert alert-primary" role="alert">{{message}}</div>
     {{/if}}
     <form id="add" action="/products/add" method="POST" encType="multipart/form-data">
       <div class="form-group row">

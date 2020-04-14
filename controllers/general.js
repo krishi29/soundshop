@@ -160,6 +160,7 @@ router.post("/sign-up", (req, res) => {
       name: inputData.yourName,
       email: inputData.email,
       password: inputData.password,
+      isAdmin: false
     };
     const user = new userModel(newUser);
     user
@@ -187,7 +188,6 @@ router.post("/sign-up", (req, res) => {
     sgMail
       .send(msg)
       .then(() => {
-        // res.redirect("/");
         customerInfo.push({});
         customerInfo[customerInfo.length - 1].id = customerInfo.length;
         customerInfo[customerInfo.length - 1].yourName = yourName;
