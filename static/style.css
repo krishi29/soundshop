@@ -640,6 +640,10 @@ input[type="submit"]:hover {
 .fa-shopping-cart {
     color: white;
     padding-bottom: 5px;
+    position: fixed;
+  bottom: 20px;
+  right: 5%;
+  transition: transform .2s;
 }
 
 .mandatory {
@@ -655,3 +659,12 @@ background-repeat: no-repeat;
 color: white;
 min-height: 500px;
 text-shadow: black 0.1em 0.1em 0.1em;}
+
+/* //searchbar */
+.select2-container .select2-selection--single{
+    height:34px !important;
+}
+.select2-container--default .select2-selection--single{
+         border: 1px solid white !important; 
+     border-radius: 0px !important; 
+}
