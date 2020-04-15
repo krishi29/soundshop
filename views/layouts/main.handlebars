@@ -38,7 +38,7 @@
                     <li class="nav-item active"><a class="nav-link" style="color:white" href="/">Home</a></li>
                     <li class="nav-item"><a class="nav-link" style="color:white" href="/products">Products</a></li>
                     <li class="nav-item"><a class="nav-link" style="color:white"
-                            href="/products?selectBestSeller=true">Best Seller</a></li>
+                            href="/products?isBestSeller=true">Best Seller</a></li>
                     <li class="nav-item"><a class="nav-link" style="color:white" href="/contact-us">Contact Us</a>
                     </li>
                     {{#if user }}
@@ -50,24 +50,40 @@
                 </ul>
 
                 <div class="search-list-container">
-                    <form id="search" action="/products/search/{{product._id}}?_method=PUT" method="POST"
-                        encType="multipart/form-data">
-                        <div class="form-group row">
-                            <label for="search" class="col-md-4"><b>search</b></label>
-                        </div>
-                        <label>Select</label>
-                        <select class="form-control select2">
-                            <option>Select</option>
-                            <option>subType</option>
-                            <option> brand</option>
-                            <option>connection</option>
-
+                    <form id="search">
+                        <select class="search-list form-control" onchange="location = '/products?' + this.value;">
+                            <option>Search...</option>
+                            <option disabled>------------</option>
+                            <option value="isBestSeller=true">Best Seller</option>
+                            <option disabled>------------</option>
+                            <option value="brand=Bose">Brand: Bose</option>
+                            <option value="brand=Edifier">Brand: Edifier</option>
+                            <option value="brand=Generic">Brand: Generic</option>
+                            <option value="brand=Google">Brand: Google</option>
+                            <option value="brand=Marshal">Brand: Marshal</option>
+                            <option value="brand=Monster">Brand: Monster</option>
+                            <option value="brand=Sennheiser">Brand: Sennheiser</option>
+                            <option value="brand=Sonos">Brand: Sonos</option>
+                            <option value="brand=Sony">Brand: Sony</option>
+                            <option value="brand=Acy">Brand: ACY</option>
+                            <option value="brand=Apple">Brand: Apple</option>
+                            <option value="brand=Amazon">Brand: Amazon</option>
+                            <option value="brand=Beats">Brand: Beats</option>
+                            <option disabled>------------</option>
+                            <option value="type=headphones">Type: Headphones</option>
+                            <option value="type=speakers">Type: Speakers</option>
+                            <option disabled>------------</option>
+                            <option value="subType=overtheear">SubType: Over the Ear</option>
+                            <option value="subType=regular">SubType: Regular</option>
+                            <option value="subType=earbuds">SubType: Ear Buds</option>
+                            <option value="subType=smart">SubType: Smart</option>
+                            <option disabled>------------</option>
                         </select>
                     </form>
                 </div>
                 <div class="main-cart">
                     <span class="tooltiptext">View Cart</span>
-                    <a href="/products/cart">
+                    <a class="cart-link" href="/products/cart">
                         <span class="glyphicon glyphicon-shopping-cart" style="color:white;font-size:xx-large;" />
                     </a>
                 </div>

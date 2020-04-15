@@ -9,12 +9,14 @@ const isAdmin = require("../middleware/adminAuth");
 const filesystem = require('fs')
 var isClerkDelete = false;
 
-const fetchAllProducts = async (user, userCart={}, filter={}) => {
+const fetchAllProducts = async (user, filter = {}, userCart = {}) => {
   var products = await productModel.find(filter).exec();
   products = JSON.parse(JSON.stringify(products))
 
   if (user && Object.entries(userCart).length === 0) {
-    userCart = await userCartModel.findOne({userId: user._id}).exec();
+    userCart = await userCartModel.findOne({
+      userId: user._id
+    }).exec();
   }
 
   if (userCart) {
@@ -29,47 +31,38 @@ const fetchAllProducts = async (user, userCart={}, filter={}) => {
   return products;
 }
 
-const filterProducts = (products, query) => {
-  var selectedProducts = [];
-  for (var i = 0; i < products.length; i++) {
-    var element = JSON.parse(JSON.stringify(products[i]));
-    var select = true;
-
-    if (
-      (query.productType && element.type !== query.productType) || query.selectBestSeller
-    ) {
-      select = false;
-    }
-
-    if (
-      (query.subType && element.categories.subType !== query.subType) || query.selectBestSeller
-    ) {
-      select = false;
-    }
-    if (query.selectBestSeller && element.isBestSeller) {
-      select = true;
-    }
-
-    if (select) {
-      selectedProducts.push(element);
-    }
+const processFilters = (filters) => {
+  if ('subType' in filters) {
+    filters['categories.subType'] = filters['subType']
+    delete filters['subType']
   }
-
-  return selectedProducts;
+  if ('brand' in filters) {
+    filters['categories.brand'] = filters['brand']
+    delete filters['brand']
+  }
+  return filters;
 }
 
-router.get("/", appendUser, async (req, res) => {
-  const allProducts = await fetchAllProducts(req.session.userInfo)
-  var message = {}
+router.get("/all", appendUser, async (req, res) => {
+  const allProducts = await fetchAllProducts()
 
-  if (req.session) {
-    message = req.session.message
-  }
+  res.send(allProducts)
+});
+
+router.get("/", appendUser, async (req, res) => {
+  const filters = req.query || {};
+
+  const allProducts = await fetchAllProducts(req.session.userInfo, processFilters(filters))
+  var message = req.session.message || {}
+
+  // if (req.session) {
+  //   message =
+  // }
 
   res.render("products/productlist", {
     title: "Products",
     headingInfo: "Products Page",
-    products: filterProducts(allProducts, req.query),
+    products: allProducts,
     message: message
   });
 });
@@ -84,14 +77,16 @@ router.get("/add", isAuthenticated, appendUser, isAdmin, function(req, res) {
 
 router.get("/cart", isAuthenticated, appendUser, async (req, res) => {
   const user = req.session.userInfo
-  const userCart = await userCartModel.findOne({userId: user._id}).exec();
+  const userCart = await userCartModel.findOne({
+    userId: user._id
+  }).exec();
   var products = []
 
   if (userCart) {
     const filter = {
       _id: userCart.products
     }
-    products = await fetchAllProducts(req.session.userInfo, userCart, filter);
+    products = await fetchAllProducts(req.session.userInfo, filter, userCart);
   }
 
   res.render("products/productcart", {

@@ -660,11 +660,24 @@ color: white;
 min-height: 500px;
 text-shadow: black 0.1em 0.1em 0.1em;}
 
-/* //searchbar */
-.select2-container .select2-selection--single{
-    height:34px !important;
+.search-list-container {
+  width: 150px;
+  margin-right: auto!important;
+  padding-left: 0;
+  margin: 7.5px -15px;
 }
-.select2-container--default .select2-selection--single{
-         border: 1px solid white !important; 
-     border-radius: 0px !important; 
+
+.main-cart {
+  margin-right: auto!important;
+  padding-left: 0;
+  margin: 7.5px -15px;
+  float: left;
+}
+
+.cart-link {
+  float: left;
+}
+
+.alert {
+  z-index: -1;
 }
