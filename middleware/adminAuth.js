@@ -1,6 +1,6 @@
 const isAdmin = (req, res, next) => {
   if (!req.session.userInfo) {
-    res.redirect("/sign-in")
+    res.redirect("/login")
   }
 
   if (req.session.userInfo.type === "Admin") {

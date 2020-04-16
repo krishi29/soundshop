@@ -57,6 +57,7 @@ app.get("/", (req, res) => {
 //load controllers
 const generalController = require("./controllers/general");
 const productController = require("./controllers/products");
+const userController = require("./controllers/users");
 
 //custom middleware functions
 app.use(session({
@@ -68,6 +69,7 @@ app.use(session({
 //map each controller to the app object
 app.use("/", generalController);
 app.use("/products", productController);
+app.use("/users", userController);
 
 mongoose.connect(process.env.MONGO_DB_CONNECTION_STRING, {useNewUrlParser: true, useUnifiedTopology: true})
 .then(()=>{

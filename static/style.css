@@ -26,7 +26,6 @@ body header {
   padding-bottom: 10px;
   margin-bottom: 10px;
   display: list-item;
-  position: sticky;
 }
 
 .container-fluid {
@@ -61,24 +60,6 @@ body header {
     display: flex;
     flex-direction: row;
 
-}
-.topnav-container {
-    position: fixed;
-    top: 0;
-    width: 100%;
-    z-index: 999;
-}
-
-.topnav {
-    overflow: hidden;
-    height: 75px;
-    padding: 20px 0 0 0;
-    background-color: #161616;
-    display: flex;
-    top: 0;
-    z-index: 99;
-    text-align: start;
-    position: fixed;
 }
 
 .logoContainer {
@@ -210,23 +191,6 @@ input[type="checkbox"] {
 .label{
     padding: 8px;
 }
-
-/* form {
-
-    width: 70%;
-    display: block;
-    overflow: hidden;
-    transition: width 1s;
-    border: solid gray 1px;
-    border-top-left-radius: 15px;
-    border-bottom-left-radius: 15px;
-    border-radius: 4px;
-    padding: 20px;
-    flex-direction: row;
-    justify-content: space-between;
-    margin: 8px 0;
-    border: 3px  #f1f1f1;
-} */
 
 input[type=text], input[type=password], input[type=number] {
     width: 60%;
@@ -429,7 +393,7 @@ button {
     position: relative;
     margin: 10px 10px 10px 10px;
     font-weight: 600;
-    z-index: 5;
+    z-index: 1;
     display: grid;
     text-align: center;
 }
@@ -676,8 +640,4 @@ text-shadow: black 0.1em 0.1em 0.1em;}
 
 .cart-link {
   float: left;
-}
-
-.alert {
-  z-index: -1;
 }

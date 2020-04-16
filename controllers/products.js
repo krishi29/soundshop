@@ -288,7 +288,7 @@ router.put("/add-cart/:userId/:productId", isAuthenticated, appendUser, async (r
   const productId = req.params.productId;
 
   if (!user) {
-    res.redirect("/sign-in");
+    res.redirect("/login");
     return;
   }
 
@@ -350,6 +350,9 @@ router.put("/add-cart/:userId/:productId", isAuthenticated, appendUser, async (r
             message = {
               success: "Product successfully added to the cart."
             }
+
+            req.session.message = message
+            res.redirect('/products')
           }).catch(async (err) => {
             console.log(`Error while fetching existing cart id for user: ${userId} & product: ${productId}`)
             isError = true

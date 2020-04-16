@@ -42,10 +42,10 @@
                     <li class="nav-item"><a class="nav-link" style="color:white" href="/contact-us">Contact Us</a>
                     </li>
                     {{#if user }}
-                    <li class="nav-item"><a class="nav-link" style="color:white" href="/logout">Log Out</a></li>
+                    <li class="nav-item"><a class="nav-link" style="color:white" href="/users/logout">Log Out</a></li>
                     {{else}}
-                    <li class="nav-item"><a class="nav-link" style="color:white" href="/sign-up">Sign Up</a></li>
-                    <li class="nav-item"><a class="nav-link" style="color:white" href="/sign-In">Sign In</a></li>
+                    <li class="nav-item"><a class="nav-link" style="color:white" href="/users/register">Sign Up</a></li>
+                    <li class="nav-item"><a class="nav-link" style="color:white" href="/users/login">Sign In</a></li>
                     {{/if}}
                 </ul>
 
@@ -95,7 +95,7 @@
     <br />
 
     <div class="container-fluid main_container">
-        <div id="products" class="product-section">{{{body}}}</div>
+        {{{body}}}
     </div>
 
 
