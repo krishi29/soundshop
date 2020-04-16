@@ -1,34 +1,60 @@
-<h1>Sending Message</h1>
+<div class="container">
+  <div>
+    {{#each error}}
+      <div class="alert alert-danger">{{this}}</div>
+    {{/each}}
+  </div>
 
-{{#if valid}}
+  {{#if hasError}}
+    <h2><span>Send a Message</span></h2>
+    <form class="form" method="POST" action="/contact-us">
 
-<form method="POST" action="/contact-us">
+      <div class="form-group row">
+        <label for="firstName" class="col-sm-2 col-form-label"><b>First Name</b></label><br />
+        <div class="col-sm-10">
+          <input type="text" name="firstName" placeholder="First Name" {{#if error.firstName}} class="error_redFrame" {{/if}}> <br><br>
+        </div>
+      </div>
 
-    <label><b>FirstName</b></label><br />
-    <input type="text" name="firstName" placeholder="First Name" {{#if errorID.firstName}} class="error_redFrame"
-        {{/if}}> <br><br>
+      <div class="form-group row">
+        <label for="lastName" class="col-sm-2 col-form-label"><b>Last Name</b></label><br />
+        <div class="col-sm-10">
+          <input type="text" name="lastName" placeholder="Last Name" {{#if error.lastName}} class="error_redFrame" {{/if}}>
+        </div>
+      </div>
 
-    <label><b>LastName</b></label><br />
-    <input type="text" name="lastName" placeholder="Last Name" {{#if errorID.lastName}} class="error_redFrame" {{/if}}>
-    <br><br>
+      <div class="form-group row">
+        <label for="email" class="col-sm-2 col-form-label"><b>Email</b></label><br />
+        <div class="col-sm-10">
+          <input type="text" name="email" placeholder="Email" {{#if error.email}} class="error_redFrame" {{/if}}> <br><br>
+        </div>
+      </div>
 
-    <label><b>Email</b></label><br />
-    <input type="text" name="email" placeholder="Email" {{#if errorID.email}} class="error_redFrame" {{/if}}> <br><br>
+      <div class="form-group row">
+        <label for="phoneNo" class="col-sm-2 col-form-label"><b>Phone No</b></label><br />
+        <div class="col-sm-10">
+          <input type="text" name="phoneNo" placeholder="Phone No" {{#if error.phoneNo}} class="error_redFrame" {{/if}}>
+        </div>
+      </div>
 
-    <label><b>Phone No</b></label><br />
-    <input type="text" name="phoneNo" placeholder="Phone No" {{#if errorID.phoneNo}} class="error_redFrame" {{/if}}>
-    <br><br>
+      <div class="form-group row">
+        <label for="message" class="col-sm-2 col-form-label"><b>Message</b></label><br />
+        <div class="col-sm-10">
+          <textarea name="message" placeholder="Write Something..." {{#if error.message}} class="error_redFrame" {{/if}}></textarea> <br><br>
+        </div>
+      </div>
 
-    <label><b>Message</b></label><br />
-    <textarea name="message" placeholder="Write Something..." {{#if errorID.message}} class="error_redFrame"
-        {{/if}}></textarea> <br><br>
-
-    <input type="submit" value="Send Message" id="subBut" />
-
-    {{else}}
-    <div class=center>
-        <h2>Thank you for contacting us</h2><br>
+      <div class="form-group row">
+        <label for="submit" class="col-sm-2 col-form-label" /><br />
+        <div class="col-sm-10">
+          <input type="submit" value="Send Message" id="subBut" />
+        </div>
+      </div>
+  {{else}}
+    <div class="center">
+      <h2>Thank you for contacting us. Someone will get in touch within 24 hours.</h2><br>
     </div>
-    {{/if}}
+  {{/if}}
 
-</form>
+  </form>
+</div>

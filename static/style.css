@@ -538,7 +538,7 @@ textarea {
     margin-top: 6px;
     margin-bottom: 16px;
     resize: vertical;
-    background-color: #ddd;
+    /* background-color: #ddd; */
 }
 
 input[type="submit"] {

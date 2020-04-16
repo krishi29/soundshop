@@ -5,8 +5,64 @@ const bcrypt = require("bcryptjs");
 const isAuthenticated = require("../middleware/auth");
 const appendUser = require("../middleware/appendUser");
 const isAdmin = require("../middleware/adminAuth");
+const sgMail = require("@sendgrid/mail");
 
-var customerInfo = [];
+sgMail.setApiKey(process.env.SENDGRID_API_KEY);
+
+const emailRegex = /^[\w._%+-]+@[\w.-]+\.[a-zA-Z]{2,}$/;
+
+const validateInputForContactUs = (details) => {
+  const {
+    firstName,
+    lastName,
+    email,
+    message,
+    phoneNo
+  } = details;
+
+  var errorMessage = {};
+  var hasError = false;
+
+  if (!firstName) {
+    errorMessage.firstName = "You must enter your First Name.";
+    hasError = true;
+  }
+
+  if (!lastName) {
+    errorMessage.lastName = "You must enter your Last name";
+    hasError = true;
+  }
+
+  if (!email) {
+    errorMessage.email = "You must enter your email";
+    hasError = true;
+  } else if (!emailRegex.test(email)) {
+    errorMessage.email = "You must enter a valid email address.";
+    hasError = true;
+  }
+
+  if (!message) {
+    errorMessage.message = "You must write something!!";
+    hasError = true;
+  }
+
+  if (!phoneNo) {
+    errorMessage.phoneNo = "Please enter your phone number";
+    hasError = true;
+  }
+
+  return {
+    contactDetails: {
+      firstName: firstName,
+      lastName: lastName,
+      email: email,
+      phoneNo: phoneNo,
+      message: message
+    },
+    errorMessage: errorMessage,
+    hasError: hasError
+  }
+}
 
 router.get("/", function(req, res) {
   res.render("general/home", {
@@ -17,114 +73,64 @@ router.get("/", function(req, res) {
 
 router.get("/dashboard", isAuthenticated, appendUser, function(req, res) {
   res.render("general/dashboard", {
-    title: "dashboard"
+    title: "Dashboard"
   });
 });
 
 router.get("/admin", isAuthenticated, appendUser, isAdmin, function(req, res) {
   res.render("general/admin", {
-    title: "admin"
+    title: "Admin Dashboard"
   });
 });
 
-//contact us route
 router.get("/contact-us", (req, res) => {
-  var inputError = true;
   res.render("general/contactUs.handlebars", {
     title: "Contact Page",
-    valid: inputError,
+    hasError: true,
   });
 });
 
-//process contact us form for when user submits form
-router.post("/contact-us", (req, res) => {
-  const {
-    firstName,
-    lastName,
-    email,
-    message
-  } = req.body;
-  const emailRegex = /^[\w._%+-]+@[\w.-]+\.[a-zA-Z]{2,}$/;
-  var errorMessage = {},
-    errorType = {};
-  var inputError = false;
+router.post("/contact-us", async (req, res) => {
+  const contactUsValidation = validateInputForContactUs(req.body);
 
-  if (firstName == "") {
-    errorMessage.firstName = "!You must enter your firstName";
-    inputError = true;
-    errorType.firstName = true;
-  }
-
-  if (lastName == "") {
-    errorMessage.lastName = "!You must enter your lastName";
-    inputError = true;
-    errorType.lastName = true;
-  }
-
-  if (email == "") {
-    errorMessage.email = "!You must enter your email";
-    inputError = true;
-    errorType.email = true;
-  } else if (!emailRegex.test(email)) {
-    errorMessage.email = "!You must enter your email";
-    inputError = true;
-    errorType.email = true;
-  }
-
-  if (req.body.message == "") {
-    errorMessage.message = "You must write something!!";
-    inputError = true;
-    errorType.message = true;
-  }
-
-  if (req.body.phoneNo == "") {
-    errorMessage.message = "Please enter phone number";
-    inputError = true;
-    errorType.phoneNo = true;
-  }
-
-  if (inputError) {
+  if (contactUsValidation.hasError) {
     res.render("general/contactUs", {
-      title: "contact Us",
-      headingInfo: "Contact Us",
-      valid: inputError,
-      error: errorMessage,
-      errorID: errorType,
+      title: "Contact Us",
+      hasError: contactUsValidation.hasError,
+      error: contactUsValidation.errorMessage,
     });
-  } else {
-    const sgMail = require("@sendgrid/mail");
-    sgMail.setApiKey(process.env.SENDGRID_API_KEY);
-    const msg = {
-      from: "krishnapatel2121@gmail.com",
-      to: `${email}`,
-      subject: "Contact Us Form Submit",
-      html: `Vistor's Full Name ${firstName} ${lastName} <br>
-     Vistor's Email Address ${email} <br>
-     Vistor's message : ${message}<br>
-    `,
-    };
-
-    //Asynchornous operation (who don't know how long this will take to execute)
-    sgMail
-      .send(msg)
-      .then(() => {
-        res.render("general/contactUs", {
-          title: "contact Us",
-          headingInfo: "Contact Us",
-          valid: inputError,
-        });
-      })
-      .catch((err) => {
-        console.log(`Error ${err}`);
-        res.render("general/contactUs", {
-          title: "contact Us",
-          headingInfo: "Contact Us",
-          valid: true,
-          error: err,
-          errorID: errorType,
-        });
-      });
+    return
   }
+
+  const msg = {
+    to: "krishnapatel2121@gmail.com",
+    from: `${contactUsValidation.contactDetails.email}`,
+    subject: "Contact Us Form Submit",
+    html: `Vistor's Full Name ${contactUsValidation.contactDetails.firstName} ${contactUsValidation.contactDetails.lastName} <br>
+     Vistor's Email Address ${contactUsValidation.contactDetails.email} <br>
+     Vistor's message : ${contactUsValidation.contactDetails.message}<br>
+    `,
+  };
+
+  sgMail
+    .send(msg)
+    .then(() => {
+      console.log(`Contact email successfully sent to the Admin from ${contactUsValidation.contactDetails.email}`)
+      res.render("general/contactUs", {
+        title: "Contact Us",
+        hasError: contactUsValidation.hasError
+      });
+    })
+    .catch((err) => {
+      console.log(`Error while sending email to Admin from ${contactUsValidation.contactDetails.email}: ${err}`);
+      res.render("general/contactUs", {
+        title: "Contact Us",
+        hasError: true,
+        error: {
+          serverError: err.message
+        }
+      });
+    });
 });
 
 module.exports = router;
